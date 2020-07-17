@@ -6,7 +6,7 @@ namespace PokemonAPI.Controllers
     /// Base controller implementation
     /// </summary>
     [ApiController]
-    [Route("{controller}/{action}")]
+    [Route("[controller]/[action]")]
     public abstract class BaseController : ControllerBase
     {
     }
