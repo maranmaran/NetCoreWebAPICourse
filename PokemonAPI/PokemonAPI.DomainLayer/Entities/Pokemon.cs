@@ -1,0 +1,22 @@
+﻿using PokemonAPI.DomainLayer.Enums;
+using System;
+using System.Collections.Generic;
+
+namespace PokemonAPI.DomainLayer.Entities
+{
+    public class Pokemon
+    {
+        public Guid Id { get; set; }
+        public string Avatar { get; set; }
+        public string Name { get; set; }
+        public int? Generation { get; set; }
+        public float Height { get; set; }
+        public float Weight { get; set; }
+        public PokemonType Type { get; set; }
+
+        public Guid BaseStatsId { get; set; }
+        public virtual BaseStat BaseStats { get; set; }
+
+        public ICollection<PokemonAbility> Abilities { get; set; } = new HashSet<PokemonAbility>();
+    }
+}
