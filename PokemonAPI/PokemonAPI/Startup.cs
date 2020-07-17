@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PokemonAPI.BusinessLayer;
 using PokemonAPI.DomainLayer;
 using System.IO;
 
@@ -42,6 +43,8 @@ namespace PokemonAPI
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
             builder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             services.AddSingleton(builder.Options);
+
+            services.RegisterBusinessServices();
 
             services.AddControllers();
 
