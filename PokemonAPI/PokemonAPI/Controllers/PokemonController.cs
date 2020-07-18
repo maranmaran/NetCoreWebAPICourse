@@ -5,6 +5,7 @@ using PokemonAPI.PersistenceLayer.DTOModels;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using PokemonAPI.PersistenceLayer.DTOModels;
 
 namespace PokemonAPI.Controllers
 {
