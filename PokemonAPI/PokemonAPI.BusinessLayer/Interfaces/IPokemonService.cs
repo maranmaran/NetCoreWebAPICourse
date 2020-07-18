@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using PokemonAPI.PersistenceLayer.DTOModels;
 
 namespace PokemonAPI.BusinessLayer.Interfaces
 {
@@ -11,10 +12,10 @@ namespace PokemonAPI.BusinessLayer.Interfaces
     /// </summary>
     public interface IPokemonService
     {
-        Task<IEnumerable<Pokemon>> GetAll(CancellationToken cancellationToken = default);
-        Task<Pokemon> Get(Guid id, CancellationToken cancellationToken = default);
-        Task<Guid> Create(Pokemon pokemon, CancellationToken cancellationToken = default);
-        Task Update(Pokemon pokemon, CancellationToken cancellationToken = default);
+        Task<IEnumerable<PokemonDTO>> GetAll(CancellationToken cancellationToken = default);
+        Task<PokemonDTO> Get(Guid id, CancellationToken cancellationToken = default);
+        Task<Guid> Create(PokemonDTO pokemon, CancellationToken cancellationToken = default);
+        Task Update(PokemonDTO pokemon, CancellationToken cancellationToken = default);
         Task Delete(Guid id, CancellationToken cancellationToken = default);
     }
 }

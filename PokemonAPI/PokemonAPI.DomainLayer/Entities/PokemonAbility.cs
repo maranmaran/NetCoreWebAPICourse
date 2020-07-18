@@ -1,10 +1,10 @@
-﻿using System;
+﻿using PokemonAPI.DomainLayer.Interfaces;
+using System;
 
 namespace PokemonAPI.DomainLayer.Entities
 {
-    public class PokemonAbility
+    public class PokemonAbility : EntityBase
     {
-        public Guid Id { get; set; }
 
         public Guid AbilityId { get; set; }
         public virtual Ability Ability { get; set; }

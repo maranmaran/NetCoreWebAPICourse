@@ -10,6 +10,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using PokemonAPI.BusinessLayer;
 using PokemonAPI.DomainLayer;
+using PokemonAPI.PersistenceLayer;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
 using System.IO;
@@ -49,6 +50,8 @@ namespace PokemonAPI
             services.AddTransient<ApplicationDbContext>();
 
             services.RegisterBusinessServices();
+            services.RegisterRepositories();
+            services.ConfigureAutomapper();
 
             services.AddControllers()
                 .AddNewtonsoftJson(options =>

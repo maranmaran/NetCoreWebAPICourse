@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
 using PokemonAPI.BusinessLayer.Exceptions;
 using PokemonAPI.BusinessLayer.Interfaces;
-using PokemonAPI.DomainLayer;
 using PokemonAPI.DomainLayer.Entities;
+using PokemonAPI.PersistenceLayer.DTOModels;
+using PokemonAPI.PersistenceLayer.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -12,35 +13,37 @@ namespace PokemonAPI.BusinessLayer.Implementations
 {
     internal class PokemonService : IPokemonService
     {
-        private readonly ApplicationDbContext _context;
-        public PokemonService(ApplicationDbContext context)
+        private readonly IPokemonRepository _repository;
+        private readonly IMapper _mapper;
+
+        public PokemonService(IPokemonRepository repository, IMapper mapper)
         {
-            _context = context;
+            _repository = repository;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Pokemon>> GetAll(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<PokemonDTO>> GetAll(CancellationToken cancellationToken = default)
         {
-            return await _context.Pokemons.Include(x => x.BaseStats).Include(x => x.Abilities).ThenInclude(x => x.Ability).ToListAsync(cancellationToken);
+            var pokemon = await _repository.GetAll(cancellationToken);
+
+            return _mapper.Map<IEnumerable<PokemonDTO>>(pokemon);
         }
 
-        public async Task<Pokemon> Get(Guid id, CancellationToken cancellationToken = default)
+        public async Task<PokemonDTO> Get(Guid id, CancellationToken cancellationToken = default)
         {
-            var pokemon = await _context.Pokemons.FirstOrDefaultAsync(pok => pok.Id == id, cancellationToken);
+            var pokemon = await _repository.GetById(id, cancellationToken);
             if (pokemon == null)
                 throw new NotFoundException(id);
 
-            return pokemon;
+            return _mapper.Map<PokemonDTO>(pokemon);
         }
 
-        public async Task<Guid> Create(Pokemon pokemon, CancellationToken cancellationToken = default)
+        public async Task<Guid> Create(PokemonDTO pokemon, CancellationToken cancellationToken = default)
         {
             try
             {
-                await _context.Pokemons.AddAsync(pokemon, cancellationToken);
-
-                await _context.SaveChangesAsync(cancellationToken);
-
-                return pokemon.Id;
+                var pokemonEntity = _mapper.Map<Pokemon>(pokemon);
+                return await _repository.Insert(pokemonEntity, cancellationToken);
             }
             catch (Exception e)
             {
@@ -48,13 +51,13 @@ namespace PokemonAPI.BusinessLayer.Implementations
             }
         }
 
-        public async Task Update(Pokemon pokemon, CancellationToken cancellationToken = default)
+        public async Task Update(PokemonDTO pokemon, CancellationToken cancellationToken = default)
         {
             try
             {
-                _context.Pokemons.Update(pokemon);
+                var pokemonEntity = _mapper.Map<Pokemon>(pokemon);
 
-                await _context.SaveChangesAsync(cancellationToken);
+                await _repository.Update(pokemonEntity, cancellationToken);
             }
             catch (Exception e)
             {
@@ -64,15 +67,9 @@ namespace PokemonAPI.BusinessLayer.Implementations
 
         public async Task Delete(Guid id, CancellationToken cancellationToken = default)
         {
-            var pokemon = await _context.Pokemons.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
-            if (pokemon == null)
-                throw new Exception("Pokemon not found");
-
             try
             {
-                _context.Pokemons.Remove(pokemon);
-
-                await _context.SaveChangesAsync(cancellationToken);
+                await _repository.Delete(id, cancellationToken);
             }
             catch (Exception e)
             {
