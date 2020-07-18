@@ -12,6 +12,7 @@ namespace PokemonAPI.DomainLayer
         public DbSet<Pokemon> Pokemons { get; set; }
         public DbSet<Ability> Abilities { get; set; }
         public DbSet<PokemonAbility> PokemonAbilities { get; set; }
+        public DbSet<Admin> Admins { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -19,6 +20,15 @@ namespace PokemonAPI.DomainLayer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // seed test admin
+            var admin = new Admin()
+            {
+                Id = Guid.Parse("0faee6ac-1772-4bbe-9990-a7d9a22dd529"),
+                Username = "admin",
+                PasswordHash = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"
+            };
+            modelBuilder.Entity<Admin>().HasData(admin);
+
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);

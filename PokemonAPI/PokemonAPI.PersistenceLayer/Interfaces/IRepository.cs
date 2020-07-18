@@ -1,10 +1,10 @@
-﻿using PokemonAPI.DomainLayer.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using PokemonAPI.DomainLayer.Entities;
 
-namespace PokemonAPI.PersistenceLayer
+namespace PokemonAPI.PersistenceLayer.Interfaces
 {
     public interface IRepository<TEntity> where TEntity : EntityBase
     {

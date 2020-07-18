@@ -10,6 +10,7 @@ namespace PokemonAPI.BusinessLayer
         public static void RegisterBusinessServices(this IServiceCollection services)
         {
             services.AddTransient<IPokemonService, PokemonService>();
+            services.AddTransient<IAuthenticationService, AuthenticationService>();
         }
 
         /// <summary>

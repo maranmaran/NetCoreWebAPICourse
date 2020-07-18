@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PokemonAPI.Controllers
 {
@@ -12,6 +13,7 @@ namespace PokemonAPI.Controllers
         /// Ping endpoint which returns Healthy if system is healthy
         /// </summary>
         /// <returns></returns>
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Ping()
         {
