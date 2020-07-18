@@ -1,4 +1,5 @@
 ﻿using PokemonAPI.DomainLayer.Enums;
+using PokemonAPI.DomainLayer.ValueObjects;
 using System;
 using System.Collections.Generic;
 
@@ -14,7 +15,6 @@ namespace PokemonAPI.DomainLayer.Entities
         public float Weight { get; set; }
         public PokemonType Type { get; set; }
 
-        public Guid BaseStatsId { get; set; }
         public virtual BaseStat BaseStats { get; set; }
 
         public ICollection<PokemonAbility> Abilities { get; set; } = new HashSet<PokemonAbility>();

@@ -10,7 +10,6 @@ namespace PokemonAPI.DomainLayer
     public class ApplicationDbContext : DbContext
     {
         public DbSet<Pokemon> Pokemons { get; set; }
-        public DbSet<BaseStat> BaseStats { get; set; }
         public DbSet<Ability> Abilities { get; set; }
         public DbSet<PokemonAbility> PokemonAbilities { get; set; }
 
