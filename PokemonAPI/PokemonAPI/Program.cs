@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using PokemonAPI.DomainLayer;
+using System;
 
 namespace PokemonAPI
 {
@@ -13,6 +11,23 @@ namespace PokemonAPI
     {
         public static void Main(string[] args)
         {
+            var host = CreateHostBuilder(args).Build();
+
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                try
+                {
+                    var context = services.GetService<ApplicationDbContext>();
+                    context.Database.Migrate(); //// comment if you don't want seed values in migrations
+                    host.Run();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Check your internet connection. DB Migration possibly failed also.", ex);
+                }
+            }
+
             CreateHostBuilder(args).Build().Run();
         }
 

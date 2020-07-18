@@ -4,9 +4,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using PokemonAPI.BusinessLayer;
 using PokemonAPI.DomainLayer;
+using Swashbuckle.AspNetCore.SwaggerUI;
+using System;
 using System.IO;
+using System.Reflection;
 
 namespace PokemonAPI
 {
@@ -39,17 +46,31 @@ namespace PokemonAPI
                 o.EnableDetailedErrors();
             });
 
-            // SQL configuration for non-injected dbcontext
-            var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            builder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-            services.AddSingleton(builder.Options);
+            services.AddTransient<ApplicationDbContext>();
 
             services.RegisterBusinessServices();
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.Converters.Add(new StringEnumConverter());
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                    options.AllowInputFormatterExceptionMessages = true;
+                });
 
             // Register the Swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(o =>
+            {
+                o.SwaggerDoc("v1.0", new OpenApiInfo { Title = "Pokemon API", Version = "1.0" });
+
+                // for swagger comments
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                o.IncludeXmlComments(xmlPath);
+            });
+
+            services.AddSwaggerGenNewtonsoftSupport(); // explicit opt-in - needs to be placed after 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,8 +84,10 @@ namespace PokemonAPI
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pokemon API v1");
+                c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "Pokemon API v1");
                 c.RoutePrefix = "api";
+                c.DocExpansion(DocExpansion.None);
+                c.DocumentTitle = "Pokemon API";
             });
 
             if (env.IsDevelopment())

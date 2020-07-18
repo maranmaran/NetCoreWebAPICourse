@@ -13,7 +13,7 @@ namespace PokemonAPI.DomainLayer.Configurations
             builder
                 .HasOne(x => x.BaseStats)
                 .WithOne(x => x.Pokemon)
-                .HasForeignKey<BaseStat>(x => x.PokemonId); ;
+                .HasForeignKey<BaseStat>(x => x.PokemonId);
 
             builder.Property(x => x.Type).HasConversion(
                 x => x.ToString(),
