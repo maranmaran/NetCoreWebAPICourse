@@ -4,6 +4,7 @@ using PokemonAPI.DomainLayer.Entities;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using PokemonAPI.PersistenceLayer.DTOModels;
 
 namespace PokemonAPI.Controllers
 {
@@ -42,7 +43,7 @@ namespace PokemonAPI.Controllers
         /// Creates single pokemon
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Pokemon pokemon, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Create([FromBody] PokemonDTO pokemon, CancellationToken cancellationToken = default)
         {
             return Ok(await _pokemonService.Create(pokemon, cancellationToken));
         }
@@ -51,7 +52,7 @@ namespace PokemonAPI.Controllers
         /// Updates single pokemon
         /// </summary>
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] Pokemon pokemon, CancellationToken cancellationToken = default)
+        public async Task<IActionResult> Update([FromBody] PokemonDTO pokemon, CancellationToken cancellationToken = default)
         {
             await _pokemonService.Update(pokemon, cancellationToken);
             return Ok();

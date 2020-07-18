@@ -1,12 +1,13 @@
 ﻿using PokemonAPI.DomainLayer.Enums;
-using PokemonAPI.DomainLayer.Interfaces;
 using PokemonAPI.DomainLayer.ValueObjects;
+using System;
 using System.Collections.Generic;
 
-namespace PokemonAPI.DomainLayer.Entities
+namespace PokemonAPI.PersistenceLayer.DTOModels
 {
-    public class Pokemon : EntityBase
+    public class PokemonDTO
     {
+        public Guid Id { get; set; }
         public string Avatar { get; set; }
         public string Name { get; set; }
         public int? Generation { get; set; }
@@ -16,6 +17,6 @@ namespace PokemonAPI.DomainLayer.Entities
 
         public virtual BaseStat BaseStats { get; set; }
 
-        public ICollection<PokemonAbility> Abilities { get; set; } = new HashSet<PokemonAbility>();
+        public ICollection<AbilityDTO> Abilities { get; set; } = new HashSet<AbilityDTO>();
     }
 }

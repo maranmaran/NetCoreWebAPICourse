@@ -1,11 +1,10 @@
-﻿using System;
+﻿using PokemonAPI.DomainLayer.Interfaces;
 using System.Collections.Generic;
 
 namespace PokemonAPI.DomainLayer.Entities
 {
-    public class Ability
+    public class Ability : EntityBase
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
