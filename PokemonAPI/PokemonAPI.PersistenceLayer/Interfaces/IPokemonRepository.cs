@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using PokemonAPI.DomainLayer.Entities;
 
-namespace PokemonAPI.PersistenceLayer.Repositories
+namespace PokemonAPI.PersistenceLayer.Interfaces
 {
     public interface IPokemonRepository : IRepository<Pokemon>
     {

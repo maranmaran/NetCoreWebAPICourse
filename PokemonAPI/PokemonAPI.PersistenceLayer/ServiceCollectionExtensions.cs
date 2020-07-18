@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PokemonAPI.PersistenceLayer.Interfaces;
 using PokemonAPI.PersistenceLayer.Repositories;
 
 namespace PokemonAPI.PersistenceLayer

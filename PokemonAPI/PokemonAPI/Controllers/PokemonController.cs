@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PokemonAPI.BusinessLayer.Interfaces;
-using PokemonAPI.DomainLayer.Entities;
+using PokemonAPI.PersistenceLayer.DTOModels;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using PokemonAPI.PersistenceLayer.DTOModels;
 
 namespace PokemonAPI.Controllers
 {
@@ -24,6 +24,7 @@ namespace PokemonAPI.Controllers
         /// <summary>
         /// Gets single pokemon
         /// </summary>
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id, CancellationToken cancellationToken = default)
         {
@@ -33,6 +34,7 @@ namespace PokemonAPI.Controllers
         /// <summary>
         /// Gets all pokemon
         /// </summary>
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken cancellationToken = default)
         {
@@ -55,7 +57,7 @@ namespace PokemonAPI.Controllers
         public async Task<IActionResult> Update([FromBody] PokemonDTO pokemon, CancellationToken cancellationToken = default)
         {
             await _pokemonService.Update(pokemon, cancellationToken);
-            return Ok();
+            return Accepted();
         }
 
         /// <summary>
@@ -65,7 +67,7 @@ namespace PokemonAPI.Controllers
         public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken = default)
         {
             await _pokemonService.Delete(id, cancellationToken);
-            return Ok();
+            return Accepted();
         }
     }
 }

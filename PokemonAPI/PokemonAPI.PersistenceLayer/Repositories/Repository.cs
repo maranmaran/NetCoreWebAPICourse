@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using PokemonAPI.DomainLayer.Entities;
+using PokemonAPI.PersistenceLayer.Interfaces;
 
 namespace PokemonAPI.PersistenceLayer.Repositories
 {
