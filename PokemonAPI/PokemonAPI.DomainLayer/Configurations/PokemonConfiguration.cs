@@ -10,10 +10,8 @@ namespace PokemonAPI.DomainLayer.Configurations
     {
         public void Configure(EntityTypeBuilder<Pokemon> builder)
         {
-            builder
-                .HasOne(x => x.BaseStats)
-                .WithOne(x => x.Pokemon)
-                .HasForeignKey<BaseStat>(x => x.PokemonId); ;
+
+            builder.OwnsOne(x => x.BaseStats);
 
             builder.Property(x => x.Type).HasConversion(
                 x => x.ToString(),
