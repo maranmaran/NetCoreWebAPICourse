@@ -23,7 +23,7 @@ namespace PokemonAPI.BusinessLayer.Implementations
         {
             try
             {
-                var admins = await _repository.GetAll(cancellationToken);
+                var admins = await _repository.GetAll(cancellationToken: cancellationToken);
 
                 var admin = admins
                     .FirstOrDefault(x => x.Username == username && x.PasswordHash == PasswordHasher.GetPasswordHash(password));
