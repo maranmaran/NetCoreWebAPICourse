@@ -1,19 +1,27 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using PokemonAPI.BusinessLayer.Interfaces;
+using PokemonAPI.DomainLayer;
 
-namespace PokemonAPI.BusinessLayer.Helpers
+namespace PokemonAPI.BusinessLayer.Implementations.UtilityServices
 {
-    public class JwtGenerator
+    public class JwtGenerator : IJwtGenerator
     {
-        public static string GenerateToken(Guid userId)
+        private readonly AppSettings _settings;
+
+        public JwtGenerator(AppSettings settings)
+        {
+            _settings = settings;
+        }
+
+        public string GenerateToken(Guid userId)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
-            // TODO: put key into settings
-            var jwtSecretKey = Encoding.ASCII.GetBytes("MyKeyIsExtraLargeAndSecretAndNeedsMoreCharactersToAddHereBecauseOtherwiseYouWouldGetException");
+            var jwtSecretKey = Encoding.ASCII.GetBytes(_settings.JwtSecret);
 
             var claims = new ClaimsIdentity(new Claim[]
             {

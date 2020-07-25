@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
+using PokemonAPI.BusinessLayer.Interfaces;
 
-namespace PokemonAPI.BusinessLayer.Helpers
+namespace PokemonAPI.BusinessLayer.Implementations.UtilityServices
 {
-    public class PasswordHasher
+    internal class PasswordHasher: IPasswordHasher
     {
         /// <summary>
         /// Generates hashed password
         /// </summary>
-        public static string GetPasswordHash(string password)
+        public string GetPasswordHash(string password)
         {
             // SHA512 is disposable by inheritance.
             using var sha256 = SHA256.Create();

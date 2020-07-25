@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
-using PokemonAPI.BusinessLayer.Implementations;
+using PokemonAPI.BusinessLayer.Implementations.DomainServices;
+using PokemonAPI.BusinessLayer.Implementations.UtilityServices;
 using PokemonAPI.BusinessLayer.Interfaces;
 
 namespace PokemonAPI.BusinessLayer
@@ -11,6 +12,8 @@ namespace PokemonAPI.BusinessLayer
         {
             services.AddTransient<IPokemonService, PokemonService>();
             services.AddTransient<IAuthenticationService, AuthenticationService>();
+            services.AddTransient<IJwtGenerator, JwtGenerator>();
+            services.AddTransient<IPasswordHasher, PasswordHasher>();
         }
 
         /// <summary>

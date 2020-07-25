@@ -1,17 +1,16 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.BusinessLayer.Exceptions;
 using PokemonAPI.BusinessLayer.Interfaces;
 using PokemonAPI.DomainLayer.Entities;
 using PokemonAPI.PersistenceLayer.DTOModels;
 using PokemonAPI.PersistenceLayer.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using PokemonAPI.PersistenceLayer.Interfaces;
 
-namespace PokemonAPI.BusinessLayer.Implementations
+namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
 {
     internal class PokemonService : IPokemonService
     {
