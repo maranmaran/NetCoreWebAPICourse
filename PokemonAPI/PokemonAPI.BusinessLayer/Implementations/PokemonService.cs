@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using PokemonAPI.BusinessLayer.Exceptions;
 using PokemonAPI.BusinessLayer.Interfaces;
 using PokemonAPI.DomainLayer.Entities;
 using PokemonAPI.PersistenceLayer.DTOModels;
-using PokemonAPI.PersistenceLayer.Repositories;
+using PokemonAPI.PersistenceLayer.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -13,10 +14,10 @@ namespace PokemonAPI.BusinessLayer.Implementations
 {
     internal class PokemonService : IPokemonService
     {
-        private readonly IPokemonRepository _repository;
+        private readonly IRepository<Pokemon> _repository;
         private readonly IMapper _mapper;
 
-        public PokemonService(IPokemonRepository repository, IMapper mapper)
+        public PokemonService(IRepository<Pokemon> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -24,14 +25,26 @@ namespace PokemonAPI.BusinessLayer.Implementations
 
         public async Task<IEnumerable<PokemonDTO>> GetAll(CancellationToken cancellationToken = default)
         {
-            var pokemon = await _repository.GetAll(cancellationToken);
+            var pokemons = await _repository.GetAll(
+                include: source => source
+                    .Include(x => x.Abilities)
+                    .ThenInclude(x => x.Ability),
+                cancellationToken: cancellationToken
+            );
 
-            return _mapper.Map<IEnumerable<PokemonDTO>>(pokemon);
+            return _mapper.Map<IEnumerable<PokemonDTO>>(pokemons);
         }
 
         public async Task<PokemonDTO> Get(Guid id, CancellationToken cancellationToken = default)
         {
-            var pokemon = await _repository.GetById(id, cancellationToken);
+            var pokemon = await _repository.Get(
+                filter: dbPokemon => dbPokemon.Id == id,
+                include: source => source
+                    .Include(x => x.Abilities)
+                    .ThenInclude(x => x.Ability),
+                cancellationToken: cancellationToken
+            );
+
             if (pokemon == null)
                 throw new NotFoundException(id);
 

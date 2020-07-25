@@ -1,8 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using PokemonAPI.DomainLayer;
-using PokemonAPI.DomainLayer.Interfaces;
+using PokemonAPI.DomainLayer.Entities;
+using PokemonAPI.PersistenceLayer.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,14 +23,67 @@ namespace PokemonAPI.PersistenceLayer.Repositories
             Entities = _context.Set<TEntity>();
         }
 
-        public async Task<IEnumerable<TEntity>> GetAll(CancellationToken cancellationToken = default)
+
+        public async Task<IEnumerable<TEntity>> GetAll(Expression<Func<TEntity, bool>> filter = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+            bool disableTracking = true,
+            CancellationToken cancellationToken = default)
         {
-            return await Entities.ToListAsync(cancellationToken);
+            var entities = Entities.AsQueryable();
+
+            if (disableTracking)
+            {
+                entities = entities.AsNoTracking();
+            }
+
+            if (include != null)
+            {
+                entities = include(entities);
+            }
+
+            if (filter != null)
+            {
+                entities = entities.Where(filter);
+            }
+
+            if (orderBy != null)
+            {
+                entities = orderBy(entities);
+            }
+
+            return await entities.ToListAsync(cancellationToken);
         }
 
-        public async Task<TEntity> GetById(Guid id, CancellationToken cancellationToken = default)
+        public async Task<TEntity> Get(Expression<Func<TEntity, bool>> filter = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+            bool disableTracking = true,
+            CancellationToken cancellationToken = default)
         {
-            return await Entities.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            var entities = Entities.AsQueryable();
+
+            if (disableTracking)
+            {
+                entities = entities.AsNoTracking();
+            }
+
+            if (include != null)
+            {
+                entities = include(entities);
+            }
+
+            if (filter != null)
+            {
+                entities = entities.Where(filter);
+            }
+
+            if (orderBy != null)
+            {
+                entities = orderBy(entities);
+            }
+
+            return await entities.FirstOrDefaultAsync(cancellationToken);
         }
 
         public async Task<Guid> Insert(TEntity entity, CancellationToken cancellationToken = default)

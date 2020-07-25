@@ -1,5 +1,4 @@
 ﻿using PokemonAPI.DomainLayer.Enums;
-using PokemonAPI.DomainLayer.Interfaces;
 using PokemonAPI.DomainLayer.ValueObjects;
 using System.Collections.Generic;
 

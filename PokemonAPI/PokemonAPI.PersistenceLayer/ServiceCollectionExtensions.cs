@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PokemonAPI.PersistenceLayer.Interfaces;
 using PokemonAPI.PersistenceLayer.Repositories;
 
 namespace PokemonAPI.PersistenceLayer
@@ -8,7 +9,7 @@ namespace PokemonAPI.PersistenceLayer
         public static void RegisterRepositories(this IServiceCollection services)
         {
             services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
-            services.AddTransient<IPokemonRepository, PokemonRepository>();
+            //services.AddTransient<IPokemonRepository, PokemonRepository>();
         }
     }
 }

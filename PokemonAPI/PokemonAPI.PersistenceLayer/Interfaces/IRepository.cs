@@ -1,23 +1,46 @@
-﻿using PokemonAPI.DomainLayer.Interfaces;
+﻿using Microsoft.EntityFrameworkCore.Query;
+using PokemonAPI.DomainLayer.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PokemonAPI.PersistenceLayer
+namespace PokemonAPI.PersistenceLayer.Interfaces
 {
     public interface IRepository<TEntity> where TEntity : EntityBase
     {
         /// <summary>
         /// Gets all entities
         /// </summary>
-        Task<IEnumerable<TEntity>> GetAll(CancellationToken cancellationToken = default);
+        /// <param name="filter">Filter predicate</param>
+        /// <param name="orderBy">Order by statement</param>
+        /// <param name="include">Include statement</param>
+        /// <param name="disableTracking">Disables tracking</param>
+        /// <param name="cancellationToken"></param>
+        Task<IEnumerable<TEntity>> GetAll(
+            Expression<Func<TEntity, bool>> filter = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+            bool disableTracking = true,
+            CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets single entity by ID
-        /// If you wish another way to fetch you can implement specific IRepository
         /// </summary>
-        Task<TEntity> GetById(Guid id, CancellationToken cancellationToken = default);
+        /// <param name="filter">Filter predicate</param>
+        /// <param name="orderBy">Order by statement</param>
+        /// <param name="include">Include statement</param>
+        /// <param name="disableTracking">Disables tracking</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task<TEntity> Get(Expression<Func<TEntity, bool>> filter = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+            Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+            bool disableTracking = true,
+            CancellationToken cancellationToken = default);
+
 
         /// <summary>
         /// Inserts single entity

@@ -10,7 +10,7 @@ using PokemonAPI.DomainLayer;
 namespace PokemonAPI.DomainLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200717200137_Initial")]
+    [Migration("20200720192003_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,41 +39,6 @@ namespace PokemonAPI.DomainLayer.Migrations
                     b.ToTable("Abilities");
                 });
 
-            modelBuilder.Entity("PokemonAPI.DomainLayer.Entities.BaseStat", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Attack")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Defense")
-                        .HasColumnType("int");
-
-                    b.Property<int>("HealthPoints")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("PokemonId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("SpecialAttack")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SpecialDefense")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Speed")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PokemonId")
-                        .IsUnique();
-
-                    b.ToTable("BaseStats");
-                });
-
             modelBuilder.Entity("PokemonAPI.DomainLayer.Entities.Pokemon", b =>
                 {
                     b.Property<Guid>("Id")
@@ -83,9 +48,6 @@ namespace PokemonAPI.DomainLayer.Migrations
                     b.Property<string>("Avatar")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
-
-                    b.Property<Guid>("BaseStatsId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int?>("Generation")
                         .HasColumnType("int");
@@ -130,13 +92,38 @@ namespace PokemonAPI.DomainLayer.Migrations
                     b.ToTable("PokemonAbilities");
                 });
 
-            modelBuilder.Entity("PokemonAPI.DomainLayer.Entities.BaseStat", b =>
+            modelBuilder.Entity("PokemonAPI.DomainLayer.Entities.Pokemon", b =>
                 {
-                    b.HasOne("PokemonAPI.DomainLayer.Entities.Pokemon", "Pokemon")
-                        .WithOne("BaseStats")
-                        .HasForeignKey("PokemonAPI.DomainLayer.Entities.BaseStat", "PokemonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.OwnsOne("PokemonAPI.DomainLayer.ValueObjects.BaseStat", "BaseStats", b1 =>
+                        {
+                            b1.Property<Guid>("PokemonId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("Attack")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Defense")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("HealthPoints")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("SpecialAttack")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("SpecialDefense")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Speed")
+                                .HasColumnType("int");
+
+                            b1.HasKey("PokemonId");
+
+                            b1.ToTable("Pokemons");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PokemonId");
+                        });
                 });
 
             modelBuilder.Entity("PokemonAPI.DomainLayer.Entities.PokemonAbility", b =>

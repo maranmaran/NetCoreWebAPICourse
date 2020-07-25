@@ -31,35 +31,16 @@ namespace PokemonAPI.DomainLayer.Migrations
                     Height = table.Column<float>(nullable: false),
                     Weight = table.Column<float>(nullable: false),
                     Type = table.Column<string>(nullable: false),
-                    BaseStatsId = table.Column<Guid>(nullable: false)
+                    BaseStats_HealthPoints = table.Column<int>(nullable: true),
+                    BaseStats_Attack = table.Column<int>(nullable: true),
+                    BaseStats_Defense = table.Column<int>(nullable: true),
+                    BaseStats_SpecialAttack = table.Column<int>(nullable: true),
+                    BaseStats_SpecialDefense = table.Column<int>(nullable: true),
+                    BaseStats_Speed = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Pokemons", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BaseStats",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    HealthPoints = table.Column<int>(nullable: false),
-                    Attack = table.Column<int>(nullable: false),
-                    Defense = table.Column<int>(nullable: false),
-                    SpecialAttack = table.Column<int>(nullable: false),
-                    SpecialDefense = table.Column<int>(nullable: false),
-                    Speed = table.Column<int>(nullable: false),
-                    PokemonId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BaseStats", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_BaseStats_Pokemons_PokemonId",
-                        column: x => x.PokemonId,
-                        principalTable: "Pokemons",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -88,12 +69,6 @@ namespace PokemonAPI.DomainLayer.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BaseStats_PokemonId",
-                table: "BaseStats",
-                column: "PokemonId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_PokemonAbilities_AbilityId",
                 table: "PokemonAbilities",
                 column: "AbilityId");
@@ -106,9 +81,6 @@ namespace PokemonAPI.DomainLayer.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "BaseStats");
-
             migrationBuilder.DropTable(
                 name: "PokemonAbilities");
 
