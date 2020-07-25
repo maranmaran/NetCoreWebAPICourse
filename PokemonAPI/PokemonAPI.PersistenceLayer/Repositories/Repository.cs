@@ -9,6 +9,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using PokemonAPI.DomainLayer.Entities;
+using PokemonAPI.PersistenceLayer.Interfaces;
 
 namespace PokemonAPI.PersistenceLayer.Repositories
 {
