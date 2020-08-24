@@ -8,7 +8,7 @@ namespace PokemonAPI.BusinessLayer
 {
     public static class ServiceCollectionExtensions
     {
-        public static void RegisterBusinessServices(this IServiceCollection services)
+        public static void ConfigureBusinessLayer(this IServiceCollection services)
         {
             services.AddTransient<IPokemonService, PokemonService>();
             services.AddTransient<IAuthenticationService, AuthenticationService>();
@@ -22,7 +22,7 @@ namespace PokemonAPI.BusinessLayer
         /// <param name="services"></param>
         public static void ConfigureAutomapper(this IServiceCollection services)
         {
-            services.AddSingleton<IMapper>(provider =>
+            services.AddSingleton(provider =>
             {
                 var config = new MapperConfiguration(c =>
                 {
@@ -32,5 +32,6 @@ namespace PokemonAPI.BusinessLayer
                 return config.CreateMapper();
             });
         }
+
     }
 }

@@ -19,7 +19,7 @@ namespace PokemonAPI.DomainLayer.Configurations
             );
 
             builder.Property(x => x.Name).HasMaxLength(50);
-            builder.Property(x => x.Avatar).HasMaxLength(50);
+            builder.Property(x => x.Avatar).HasMaxLength(250);
         }
     }
 }

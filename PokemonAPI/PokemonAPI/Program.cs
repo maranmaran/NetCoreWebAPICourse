@@ -18,8 +18,11 @@ namespace PokemonAPI
                 var services = scope.ServiceProvider;
                 try
                 {
+                    // db migration
                     var context = services.GetService<ApplicationDbContext>();
-                    context.Database.Migrate(); //// comment if you don't want seed values in migrations
+                    context.Database.Migrate(); // comment if you don't want seed values in migrations
+
+                    // run 
                     host.Run();
                 }
                 catch (Exception ex)

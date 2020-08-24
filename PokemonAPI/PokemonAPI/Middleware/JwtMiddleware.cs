@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 namespace PokemonAPI.Middleware
 {
     /// <summary>
+    /// Middleware that goes into request pipeline
     /// Gets JWT from cookie in request and sets auth header on the fly if it doesn't have it
     /// </summary>
     public class JwtMiddleware

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using PokemonAPI.DomainLayer.Entities;
+using PokemonAPI.DomainLayer.Seed;
 using System;
 using System.IO;
 
@@ -20,14 +21,7 @@ namespace PokemonAPI.DomainLayer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // seed test admin
-            var admin = new Admin()
-            {
-                Id = Guid.Parse("0faee6ac-1772-4bbe-9990-a7d9a22dd529"),
-                Username = "admin",
-                PasswordHash = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"
-            };
-            modelBuilder.Entity<Admin>().HasData(admin);
+            modelBuilder.Seed(); // seeds database with data..
 
             base.OnModelCreating(modelBuilder);
 
@@ -70,7 +64,7 @@ namespace PokemonAPI.DomainLayer
 
             // Here we create the DbContextOptionsBuilder manually.        
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            builder.UseSqlServer(connectionString);
+            builder.UseNpgsql(connectionString);
 
             // Create our DbContext.
             return new ApplicationDbContext(builder.Options);

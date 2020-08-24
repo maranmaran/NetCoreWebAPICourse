@@ -2,66 +2,109 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PokemonAPI.DomainLayer;
 
 namespace PokemonAPI.DomainLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200720192003_Initial")]
-    partial class Initial
+    [Migration("20200824181309_Seed")]
+    partial class Seed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.6")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
+                .HasAnnotation("ProductVersion", "3.1.4")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("PokemonAPI.DomainLayer.Entities.Ability", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("character varying(50)")
                         .HasMaxLength(50);
 
                     b.HasKey("Id");
 
                     b.ToTable("Abilities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("0faee6ac-1772-4bbe-9990-a7d9a22dd539"),
+                            Description = "Throws a sharp leaf at opponent.",
+                            Name = "Leaf throw"
+                        },
+                        new
+                        {
+                            Id = new Guid("0faee6ac-1772-4bbe-9990-a7d9a22dd549"),
+                            Description = "Hardens skin to repel enemy attacks.",
+                            Name = "Harden"
+                        });
+                });
+
+            modelBuilder.Entity("PokemonAPI.DomainLayer.Entities.Admin", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Admins");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("0faee6ac-1772-4bbe-9990-a7d9a22dd529"),
+                            PasswordHash = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",
+                            Username = "admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("0faee6ac-1772-4bbe-9990-a7d9a22dd559")
+                        });
                 });
 
             modelBuilder.Entity("PokemonAPI.DomainLayer.Entities.Pokemon", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Avatar")
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("character varying(50)")
                         .HasMaxLength(50);
 
                     b.Property<int?>("Generation")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<float>("Height")
                         .HasColumnType("real");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("character varying(50)")
                         .HasMaxLength(50);
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<float>("Weight")
                         .HasColumnType("real");
@@ -75,13 +118,13 @@ namespace PokemonAPI.DomainLayer.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("AbilityId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("PokemonId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -97,25 +140,25 @@ namespace PokemonAPI.DomainLayer.Migrations
                     b.OwnsOne("PokemonAPI.DomainLayer.ValueObjects.BaseStat", "BaseStats", b1 =>
                         {
                             b1.Property<Guid>("PokemonId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("uuid");
 
                             b1.Property<int>("Attack")
-                                .HasColumnType("int");
+                                .HasColumnType("integer");
 
                             b1.Property<int>("Defense")
-                                .HasColumnType("int");
+                                .HasColumnType("integer");
 
                             b1.Property<int>("HealthPoints")
-                                .HasColumnType("int");
+                                .HasColumnType("integer");
 
                             b1.Property<int>("SpecialAttack")
-                                .HasColumnType("int");
+                                .HasColumnType("integer");
 
                             b1.Property<int>("SpecialDefense")
-                                .HasColumnType("int");
+                                .HasColumnType("integer");
 
                             b1.Property<int>("Speed")
-                                .HasColumnType("int");
+                                .HasColumnType("integer");
 
                             b1.HasKey("PokemonId");
 

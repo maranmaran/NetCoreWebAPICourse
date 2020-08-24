@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PokemonAPI.DomainLayer.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -18,6 +18,19 @@ namespace PokemonAPI.DomainLayer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Abilities", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Admins",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Username = table.Column<string>(nullable: true),
+                    PasswordHash = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Admins", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -68,6 +81,11 @@ namespace PokemonAPI.DomainLayer.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "Admins",
+                columns: new[] { "Id", "PasswordHash", "Username" },
+                values: new object[] { new Guid("0faee6ac-1772-4bbe-9990-a7d9a22dd529"), "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918", "admin" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_PokemonAbilities_AbilityId",
                 table: "PokemonAbilities",
@@ -81,6 +99,9 @@ namespace PokemonAPI.DomainLayer.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Admins");
+
             migrationBuilder.DropTable(
                 name: "PokemonAbilities");
 

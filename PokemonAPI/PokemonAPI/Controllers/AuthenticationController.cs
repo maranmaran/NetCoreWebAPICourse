@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PokemonAPI.BusinessLayer.Interfaces;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 
 namespace PokemonAPI.Controllers
 {
@@ -23,7 +23,7 @@ namespace PokemonAPI.Controllers
         /// Sign in as admin
         /// </summary>
         [AllowAnonymous]
-        [HttpGet("{username}/{password}")]
+        [HttpGet("SignIn/{username}/{password}")]
         public async Task<IActionResult> SignIn(string username, string password, CancellationToken cancellationToken = default)
         {
             var token = await _authenticationService.SignIn(username, password, cancellationToken);
