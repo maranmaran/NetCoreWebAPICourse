@@ -32,7 +32,7 @@ I was using VS19 so if you're using something else say VSCode you'll have to use
 * Open project
 * Set Backend.API project as startup
 * Create appsettings.Development.json -> Use appSettings.json as cook-book
-* Start http://localhost:61634/api/index.html
+* Start http://localhost:44320/api/index.html
 * Database should automatically seed.
   * If you get stuck further trouble shooting might include checking your Connection string (appsettings and DbContext implementation), privilages and perhaps to manually migrate db with dotnet ef core tools (CLI) 
 
