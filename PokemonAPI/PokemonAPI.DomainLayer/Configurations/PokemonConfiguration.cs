@@ -10,7 +10,7 @@ namespace PokemonAPI.DomainLayer.Configurations
     {
         public void Configure(EntityTypeBuilder<Pokemon> builder)
         {
-
+            
             builder.OwnsOne(x => x.BaseStats);
 
             builder.Property(x => x.Type).HasConversion(
@@ -20,6 +20,10 @@ namespace PokemonAPI.DomainLayer.Configurations
 
             builder.Property(x => x.Name).HasMaxLength(50);
             builder.Property(x => x.Avatar).HasMaxLength(250);
+
+            builder.HasOne(p => p.Trainer)
+                    .WithMany(t => t.CaughtPokemons)
+                    .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

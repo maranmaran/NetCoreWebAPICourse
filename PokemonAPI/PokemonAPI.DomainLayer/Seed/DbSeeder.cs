@@ -13,6 +13,7 @@ namespace PokemonAPI.DomainLayer.Seed
             builder.SeedUsers();
             builder.SeedAbilities();
             builder.SeedPokemon();
+            builder.SeedTrainer();
         }
         private static void SeedUsers(this ModelBuilder builder)
         {
@@ -93,5 +94,30 @@ namespace PokemonAPI.DomainLayer.Seed
 
             builder.Entity<PokemonAbility>().HasData(abilities);
         }
+
+        private static void SeedTrainer(this ModelBuilder builder)
+        {
+            var trainer = new Trainer()
+            {
+                Id = Guid.Parse("00dc1dbd-4868-4b4a-934d-1d0b165ea104"),
+                FirstName = "Ash",
+                LastName = "Ketcham",
+
+            };
+
+            builder.Entity<Trainer>().HasData(trainer);
+
+            var address = new
+            {
+                TrainerId = Guid.Parse("00dc1dbd-4868-4b4a-934d-1d0b165ea104"),
+                City = "Bogota",
+                Street = "Las Venturas",
+                HouseNumber = "10"
+            };
+
+            builder.Entity<Trainer>().OwnsOne(x => x.Address).HasData(address);
+        }
+
+            
     }
 }
