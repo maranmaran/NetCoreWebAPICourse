@@ -14,6 +14,7 @@ namespace PokemonAPI.DomainLayer
         public DbSet<Ability> Abilities { get; set; }
         public DbSet<PokemonAbility> PokemonAbilities { get; set; }
         public DbSet<Admin> Admins { get; set; }
+        public DbSet<Trainer> Trainers { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
