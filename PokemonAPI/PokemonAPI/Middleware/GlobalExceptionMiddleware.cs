@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using PokemonAPI.BusinessLayer.Exceptions;
 using PokemonAPI.Models;
 
 namespace PokemonAPI.Middleware
@@ -54,6 +55,42 @@ namespace PokemonAPI.Middleware
                     errorDetails.Status = HttpStatusCode.BadRequest;
                     errorDetails.Message = validationEx.Message;
                     errorDetails.Errors = JsonConvert.SerializeObject(validationEx.ValidationResult);
+                }
+
+                else if (exception is NotFoundException)
+                {
+                    errorDetails.Status = HttpStatusCode.NotFound;
+                    errorDetails.Message = "Not found";
+                }
+
+                else if (exception is CreateException)
+                {
+                    errorDetails.Status = HttpStatusCode.InternalServerError;
+                    errorDetails.Message = "Could not create entity";
+                }
+
+                else if (exception is UpdateException)
+                {
+                    errorDetails.Status = HttpStatusCode.InternalServerError;
+                    errorDetails.Message = "Could not update entity";
+                }
+
+                else if (exception is DeleteException)
+                {
+                    errorDetails.Status = HttpStatusCode.InternalServerError;
+                    errorDetails.Message = "Could not delete entity";
+                }
+
+                else if (exception is UnauthorizedAccessException)
+                {
+                    errorDetails.Status = HttpStatusCode.Unauthorized;
+                    errorDetails.Message = "Wrong username or password";
+                }
+
+                else
+                {
+                    errorDetails.Status = HttpStatusCode.InternalServerError;
+                    errorDetails.Message = "Internal Server Error";
                 }
 
                 await context.Response.WriteAsync(errorDetails.ToString());

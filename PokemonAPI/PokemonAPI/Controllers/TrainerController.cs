@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PokemonAPI.BusinessLayer.Exceptions;
 using PokemonAPI.BusinessLayer.Interfaces;
 using PokemonAPI.DomainLayer.Entities;
 using PokemonAPI.PersistenceLayer.DTOModels;
@@ -31,7 +32,15 @@ namespace PokemonAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id, CancellationToken cancellationToken = default)
         {
-            return Ok(await _trainerService.Get(id, cancellationToken));
+            try
+            {
+                return Ok(await _trainerService.Get(id, cancellationToken));
+            }
+            catch
+            {
+                throw new NotFoundException(id);
+            }
+            
         }
 
         [HttpPost]
