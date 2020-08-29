@@ -25,7 +25,7 @@ This repository will provide step by step course on how to create Restful web AP
 ## Technologies: 
 * .Net Core 3.1
 * SignalR
-* MSSQL (latest)
+* PgSQL (latest)
 * EF Core
 * Automapper
 * Swagger 
