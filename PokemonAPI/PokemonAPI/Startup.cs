@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using PokemonAPI.BusinessLayer;
 using PokemonAPI.Middleware;
+using PokemonAPI.Middleware.API.Middleware;
 using PokemonAPI.PersistenceLayer;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.IO;
@@ -65,13 +65,10 @@ namespace PokemonAPI
             });
 
             app.UseMiddleware<JwtMiddleware>();
+            app.UseMiddleware<GlobalExceptionMiddleware>();
+
             app.UseAuthentication();
             app.UseAuthorization();
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
 
             app.UseHttpsRedirection();
 
