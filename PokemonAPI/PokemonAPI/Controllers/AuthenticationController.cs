@@ -27,19 +27,13 @@ namespace PokemonAPI.Controllers
         [HttpGet("SignIn/{username}/{password}")]
         public async Task<IActionResult> SignIn(string username, string password, CancellationToken cancellationToken = default)
         {
-            try
-            {
+            
                 var token = await _authenticationService.SignIn(username, password, cancellationToken);
 
                 Response.Cookies.Append(JwtBearerDefaults.AuthenticationScheme, token);
 
                 return Accepted();
-            }
-            catch
-            {
-                throw new UnauthorizedAccessException();
-            }
-            
+             
         }
     }
 }

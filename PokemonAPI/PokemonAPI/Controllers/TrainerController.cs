@@ -32,15 +32,7 @@ namespace PokemonAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id, CancellationToken cancellationToken = default)
         {
-            try
-            {
-                return Ok(await _trainerService.Get(id, cancellationToken));
-            }
-            catch
-            {
-                throw new NotFoundException(id);
-            }
-            
+                return Ok(await _trainerService.Get(id, cancellationToken));  
         }
 
         [HttpPost]

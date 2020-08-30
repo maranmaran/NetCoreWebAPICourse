@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -81,7 +82,7 @@ namespace PokemonAPI.Middleware
                     errorDetails.Message = "Could not delete entity";
                 }
 
-                else if (exception is UnauthorizedAccessException)
+                else if (exception is AuthenticationException)
                 {
                     errorDetails.Status = HttpStatusCode.Unauthorized;
                     errorDetails.Message = "Wrong username or password";
