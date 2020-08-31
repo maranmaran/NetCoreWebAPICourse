@@ -12,6 +12,7 @@ namespace PokemonAPI.DomainLayer.Entities
         public float Height { get; set; }
         public float Weight { get; set; }
         public PokemonType Type { get; set; }
+        public Trainer Trainer { get; set; }
 
         public virtual BaseStat BaseStats { get; set; }
 

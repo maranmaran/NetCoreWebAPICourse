@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PokemonAPI.BusinessLayer.Interfaces;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,11 +27,13 @@ namespace PokemonAPI.Controllers
         [HttpGet("SignIn/{username}/{password}")]
         public async Task<IActionResult> SignIn(string username, string password, CancellationToken cancellationToken = default)
         {
-            var token = await _authenticationService.SignIn(username, password, cancellationToken);
+            
+                var token = await _authenticationService.SignIn(username, password, cancellationToken);
 
-            Response.Cookies.Append(JwtBearerDefaults.AuthenticationScheme, token);
+                Response.Cookies.Append(JwtBearerDefaults.AuthenticationScheme, token);
 
-            return Accepted();
+                return Accepted();
+             
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using PokemonAPI.DomainLayer.Entities;
 using PokemonAPI.PersistenceLayer.DTOModels;
+using System;
 using System.Linq;
+using System.Xml.Serialization;
 
 namespace PokemonAPI.BusinessLayer
 {
@@ -39,6 +41,20 @@ namespace PokemonAPI.BusinessLayer
                 .ForMember(d => d.Id, opt => opt.MapFrom(s => s.AbilityId))
                 .ForMember(d => d.Name, opt => opt.MapFrom(s => s.Ability.Name))
                 .ForMember(d => d.Description, opt => opt.MapFrom(s => s.Ability.Description));
+
+
+            CreateMap<Trainer, TrainerDTO>()
+                .ForMember(dest =>
+                dest.FullName,
+                opt => opt.MapFrom(src => src.FirstName + " " + src.LastName))
+                .ReverseMap()
+                .ForMember(dest =>
+                dest.FirstName,
+                opt => opt.MapFrom(src => src.FullName.Split(' ', StringSplitOptions.None).ToList()[0]))
+                .ForMember(dest =>
+                dest.LastName,
+                opt => opt.MapFrom(src => src.FullName.Split(' ', StringSplitOptions.None).ToList()[1]));
+
 
 
         }

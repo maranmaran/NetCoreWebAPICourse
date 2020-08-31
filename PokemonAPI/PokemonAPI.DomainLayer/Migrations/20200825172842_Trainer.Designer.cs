@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PokemonAPI.DomainLayer;
@@ -9,9 +10,10 @@ using PokemonAPI.DomainLayer;
 namespace PokemonAPI.DomainLayer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200825172842_Trainer")]
+    partial class Trainer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -177,14 +179,6 @@ namespace PokemonAPI.DomainLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Trainers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("00dc1dbd-4868-4b4a-934d-1d0b165ea104"),
-                            FirstName = "Ash",
-                            LastName = "Ketcham"
-                        });
                 });
 
             modelBuilder.Entity("PokemonAPI.DomainLayer.Entities.Pokemon", b =>
@@ -275,15 +269,6 @@ namespace PokemonAPI.DomainLayer.Migrations
 
                             b1.WithOwner()
                                 .HasForeignKey("TrainerId");
-
-                            b1.HasData(
-                                new
-                                {
-                                    TrainerId = new Guid("00dc1dbd-4868-4b4a-934d-1d0b165ea104"),
-                                    City = "Bogota",
-                                    HouseNumber = "10",
-                                    Street = "Las Venturas"
-                                });
                         });
                 });
 #pragma warning restore 612, 618

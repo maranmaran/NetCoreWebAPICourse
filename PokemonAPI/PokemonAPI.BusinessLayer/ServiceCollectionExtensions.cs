@@ -14,6 +14,7 @@ namespace PokemonAPI.BusinessLayer
             services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IJwtGenerator, JwtGenerator>();
             services.AddTransient<IPasswordHasher, PasswordHasher>();
+            services.AddTransient<ITrainerService, TrainerService>();
         }
 
         /// <summary>
