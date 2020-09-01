@@ -4,6 +4,7 @@ using PokemonAPI.BusinessLayer.Interfaces;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using PokemonAPI.BusinessLayer.Implementations.DomainServices;
 
 namespace PokemonAPI.Controllers
 {
