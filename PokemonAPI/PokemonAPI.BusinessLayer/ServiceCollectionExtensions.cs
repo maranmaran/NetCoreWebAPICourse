@@ -11,6 +11,7 @@ namespace PokemonAPI.BusinessLayer
         public static void ConfigureBusinessLayer(this IServiceCollection services)
         {
             services.AddTransient<IPokemonService, PokemonService>();
+            services.AddTransient<IBattleService, BattleService>();
             services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IJwtGenerator, JwtGenerator>();
             services.AddTransient<IPasswordHasher, PasswordHasher>();
