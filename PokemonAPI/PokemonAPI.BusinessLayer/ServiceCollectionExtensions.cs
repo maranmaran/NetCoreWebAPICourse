@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PokemonAPI.BusinessLayer.Implementations.DomainServices;
 using PokemonAPI.BusinessLayer.Implementations.UtilityServices;
 using PokemonAPI.BusinessLayer.Interfaces;
+using PokemonAPI.BusinessLayer.Validator;
 
 namespace PokemonAPI.BusinessLayer
 {
@@ -16,6 +17,7 @@ namespace PokemonAPI.BusinessLayer
             services.AddTransient<IJwtGenerator, JwtGenerator>();
             services.AddTransient<IPasswordHasher, PasswordHasher>();
             services.AddTransient<ITrainerService, TrainerService>();
+            services.AddTransient<IPokemonValidator, PokemonValidator>();
         }
 
         /// <summary>

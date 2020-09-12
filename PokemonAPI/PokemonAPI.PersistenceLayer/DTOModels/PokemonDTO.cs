@@ -2,6 +2,7 @@
 using PokemonAPI.DomainLayer.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PokemonAPI.PersistenceLayer.DTOModels
 {
@@ -9,7 +10,9 @@ namespace PokemonAPI.PersistenceLayer.DTOModels
     {
         public Guid Id { get; set; }
         public string Avatar { get; set; }
+        [Required]
         public string Name { get; set; }
+        
         public int? Generation { get; set; }
         public float Height { get; set; }
         public float Weight { get; set; }

@@ -54,7 +54,7 @@ namespace PokemonAPI.Middleware
                 if (exception is ValidationException validationEx)
                 {
                     errorDetails.Status = HttpStatusCode.BadRequest;
-                    errorDetails.Message = validationEx.Message;
+                    errorDetails.Message = validationEx.Message; 
                     errorDetails.Errors = JsonConvert.SerializeObject(validationEx.ValidationResult);
                 }
 
