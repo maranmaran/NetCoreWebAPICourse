@@ -58,6 +58,8 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
 
         public async Task<Guid> Create(PokemonDTO pokemon, CancellationToken cancellationToken = default)
         {
+            
+
             if (_validator.IsValid(pokemon))
             {
                 try
@@ -71,7 +73,8 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
                 }
             }
 
-            throw new ValidationException("Pokemon name is required");
+
+            throw new ValidationException(_validator.getErrorMessage()) ;
             
         }
 

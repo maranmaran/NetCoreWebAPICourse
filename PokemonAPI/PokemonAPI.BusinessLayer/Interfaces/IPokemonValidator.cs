@@ -8,5 +8,6 @@ namespace PokemonAPI.BusinessLayer.Interfaces
     public interface IPokemonValidator
     {
          bool IsValid(PokemonDTO pokemon);
+        String getErrorMessage();
     }
 }
