@@ -51,11 +51,11 @@ namespace PokemonAPI.Middleware
                     Message = exception.Message,
                 };
 
-                if (exception is ValidationException validationEx)
+                if (exception is BusinessLayer.Exceptions.ValidationException validationEx)
                 {
                     errorDetails.Status = HttpStatusCode.BadRequest;
                     errorDetails.Message = validationEx.Message; 
-                    errorDetails.Errors = JsonConvert.SerializeObject(validationEx.ValidationResult);
+                    errorDetails.Errors = JsonConvert.SerializeObject(validationEx._errors, Formatting.Indented);
                 }
 
                 else if (exception is NotFoundException)

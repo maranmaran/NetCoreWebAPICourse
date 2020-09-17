@@ -58,23 +58,22 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
 
         public async Task<Guid> Create(PokemonDTO pokemon, CancellationToken cancellationToken = default)
         {
+
+            _validator.IsValid(pokemon);
+
+            try
+            {
+                var pokemonEntity = _mapper.Map<Pokemon>(pokemon);
+                return await _repository.Insert(pokemonEntity, cancellationToken);
+            }
+            catch (Exception e)
+            {
+                throw new CreateException(e);
+            }
             
 
-            if (_validator.IsValid(pokemon))
-            {
-                try
-                {
-                    var pokemonEntity = _mapper.Map<Pokemon>(pokemon);
-                    return await _repository.Insert(pokemonEntity, cancellationToken);
-                }
-                catch (Exception e)
-                {
-                    throw new CreateException(e);
-                }
-            }
 
-
-            throw new ValidationException(_validator.getErrorMessage()) ;
+            
             
         }
 
