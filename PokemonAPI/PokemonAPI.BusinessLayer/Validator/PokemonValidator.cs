@@ -1,11 +1,9 @@
 ﻿using PokemonAPI.BusinessLayer.Exceptions;
 using PokemonAPI.BusinessLayer.Interfaces;
-using PokemonAPI.DomainLayer.Entities;
 using PokemonAPI.PersistenceLayer.DTOModels;
 using System;
 using System.Collections.Generic;
-
-using System.Text;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace PokemonAPI.BusinessLayer.Validator
@@ -21,51 +19,54 @@ namespace PokemonAPI.BusinessLayer.Validator
             {
                 errorMap[errorKey].Add(message);
             }
+            else
+            {
+                errorMap.Add(errorKey, new List<string>() { message });
+            }
 
-            errorMap.Add(errorKey, new List<string>() { message });
         }
 
         public void IsValid(PokemonDTO pokemon)
         {
 
-            if (string.IsNullOrEmpty(pokemon.Name))
+            if (string.IsNullOrWhiteSpace(pokemon.Name))
             {
-                AddOrUpdatePokemonErrors(errorMap, "Pokemon name is required", "Name");
+                AddOrUpdatePokemonErrors(errorMap, "Pokemon name is required", nameof(pokemon.Name));
             }
 
-            if (!(Regex.IsMatch(pokemon.Name, @"^[a-zA-Z]+$")))
+            if (!pokemon.Name.All(Char.IsLetter))
             {
-                AddOrUpdatePokemonErrors(errorMap, "Pokemon name must contain only letters", "Name");
+                AddOrUpdatePokemonErrors(errorMap, "Pokemon name must contain only letters", nameof(pokemon.Name));
             }
 
-            if (string.IsNullOrEmpty(pokemon.Avatar))
+            if (string.IsNullOrWhiteSpace(pokemon.Avatar))
             {
-                AddOrUpdatePokemonErrors(errorMap, "Pokemon avatar is required", "Avatar");
+                AddOrUpdatePokemonErrors(errorMap, "Pokemon avatar is required", nameof(pokemon.Avatar));
             }
 
-            if (!(Regex.IsMatch(pokemon.Avatar, @"^[a-zA-Z]+$")))
+            if (!pokemon.Avatar.All(Char.IsLetter))
             {
-                AddOrUpdatePokemonErrors(errorMap, "Pokemon avatar must contain only letters", "Avatar");
+                AddOrUpdatePokemonErrors(errorMap, "Pokemon avatar must contain only letters", nameof(pokemon.Avatar));
             }
 
             if (pokemon.Generation == null)
             {
-                AddOrUpdatePokemonErrors(errorMap, "Pokemon generation is required", "Generation");
+                AddOrUpdatePokemonErrors(errorMap, "Pokemon generation is required", nameof(pokemon.Generation));
             }
 
             if (pokemon.Generation < 1 || pokemon.Generation > 8)
             {
-                AddOrUpdatePokemonErrors(errorMap, "Pokemon generation must be between 1 and 8 inclusive", "Generation");
+                AddOrUpdatePokemonErrors(errorMap, "Pokemon generation must be between 1 and 8 inclusive", nameof(pokemon.Generation));
             }
             
             if (pokemon.Height == 0)
             {
-                AddOrUpdatePokemonErrors(errorMap, "Pokemon height is required", "Height");
+                AddOrUpdatePokemonErrors(errorMap, "Pokemon height is required", nameof(pokemon.Height));
             }
 
             if (pokemon.Weight == 0)
             {
-                AddOrUpdatePokemonErrors(errorMap, "Pokemon weight is required", "Weight");
+                AddOrUpdatePokemonErrors(errorMap, "Pokemon weight is required", nameof(pokemon.Weight));
             }
 
             if (errorMap.Count > 0)
