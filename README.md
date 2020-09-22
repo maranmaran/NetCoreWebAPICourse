@@ -10,6 +10,7 @@ This repository will provide step by step course on how to create Restful web AP
 - Error handling
 - Logging (in progress)
 - Unit testing (in progress)
+- Integrations / Functional tests
 - Web sockets (in progress)
 - Event sourcing (in progress)
 
