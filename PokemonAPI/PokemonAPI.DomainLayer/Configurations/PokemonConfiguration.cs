@@ -20,10 +20,14 @@ namespace PokemonAPI.DomainLayer.Configurations
 
             builder.Property(x => x.Name).HasMaxLength(50);
             builder.Property(x => x.Avatar).HasMaxLength(250);
+            builder.Property(x => x.TrainerId).IsRequired(false);
 
             builder.HasOne(p => p.Trainer)
                     .WithMany(t => t.CaughtPokemons)
-                    .OnDelete(DeleteBehavior.SetNull);
+                    .OnDelete(DeleteBehavior.SetNull)
+                    .HasForeignKey(x => x.TrainerId);
+
+            
         }
     }
 }
