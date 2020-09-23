@@ -2,6 +2,7 @@
 using PokemonAPI.DomainLayer.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PokemonAPI.PersistenceLayer.DTOModels
 {

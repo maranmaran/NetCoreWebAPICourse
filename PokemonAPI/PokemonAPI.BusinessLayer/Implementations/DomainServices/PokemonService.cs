@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.BusinessLayer.Exceptions;
 using PokemonAPI.BusinessLayer.Interfaces;
+using PokemonAPI.BusinessLayer.Validator;
 using PokemonAPI.DomainLayer.Entities;
 using PokemonAPI.PersistenceLayer.DTOModels;
 using PokemonAPI.PersistenceLayer.Interfaces;
+
 
 namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
 {
@@ -16,11 +19,13 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
     {
         private readonly IRepository<Pokemon> _repository;
         private readonly IMapper _mapper;
+        private readonly IPokemonValidator _validator;
 
-        public PokemonService(IRepository<Pokemon> repository, IMapper mapper)
+        public PokemonService(IRepository<Pokemon> repository, IMapper mapper, IPokemonValidator validator)
         {
             _repository = repository;
             _mapper = mapper;
+            _validator = validator;
         }
 
         public async Task<IEnumerable<PokemonDTO>> GetAll(CancellationToken cancellationToken = default)
@@ -53,6 +58,9 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
 
         public async Task<Guid> Create(PokemonDTO pokemon, CancellationToken cancellationToken = default)
         {
+
+            _validator.IsValid(pokemon);
+
             try
             {
                 var pokemonEntity = _mapper.Map<Pokemon>(pokemon);
@@ -62,6 +70,11 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
             {
                 throw new CreateException(e);
             }
+            
+
+
+            
+            
         }
 
         public async Task Update(PokemonDTO pokemon, CancellationToken cancellationToken = default)
