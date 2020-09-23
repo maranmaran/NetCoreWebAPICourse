@@ -88,6 +88,12 @@ namespace PokemonAPI.Middleware
                     errorDetails.Message = "Wrong username or password";
                 }
 
+                else if (exception is CatchPokemonException catchEx)
+                {
+                    errorDetails.Status = HttpStatusCode.BadRequest;
+                    errorDetails.Message = catchEx.Message;
+                }
+
                 else
                 {
                     errorDetails.Status = HttpStatusCode.InternalServerError;

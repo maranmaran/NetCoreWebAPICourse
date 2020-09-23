@@ -1,4 +1,5 @@
-﻿using PokemonAPI.DomainLayer.Enums;
+﻿using PokemonAPI.DomainLayer.Entities;
+using PokemonAPI.DomainLayer.Enums;
 using PokemonAPI.DomainLayer.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace PokemonAPI.PersistenceLayer.DTOModels
         public float Height { get; set; }
         public float Weight { get; set; }
         public PokemonType Type { get; set; }
+        public TrainerDTO Trainer { get; set; }
+        public Guid? TrainerId { get; set; }
 
         public virtual BaseStat BaseStats { get; set; }
 
