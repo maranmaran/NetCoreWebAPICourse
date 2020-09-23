@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonAPI", "PokemonAPI\PokemonAPI.csproj", "{88FA574A-F4C1-4038-B21E-D65602A7CC08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokemonAPI", "PokemonAPI\PokemonAPI.csproj", "{88FA574A-F4C1-4038-B21E-D65602A7CC08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonAPI.PersistenceLayer", "PokemonAPI.PersistenceLayer\PokemonAPI.PersistenceLayer.csproj", "{E876105D-D34C-4759-9D93-0F815C290680}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokemonAPI.PersistenceLayer", "PokemonAPI.PersistenceLayer\PokemonAPI.PersistenceLayer.csproj", "{E876105D-D34C-4759-9D93-0F815C290680}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonAPI.DomainLayer", "PokemonAPI.DomainLayer\PokemonAPI.DomainLayer.csproj", "{9D87CF7E-358B-4F71-80E7-BB7D64E7A990}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokemonAPI.DomainLayer", "PokemonAPI.DomainLayer\PokemonAPI.DomainLayer.csproj", "{9D87CF7E-358B-4F71-80E7-BB7D64E7A990}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokemonAPI.BusinessLayer", "PokemonAPI.BusinessLayer\PokemonAPI.BusinessLayer.csproj", "{AD0D98AB-412F-4758-BE1C-E16DFE3DCB9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokemonAPI.BusinessLayer", "PokemonAPI.BusinessLayer\PokemonAPI.BusinessLayer.csproj", "{AD0D98AB-412F-4758-BE1C-E16DFE3DCB9A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{860C533B-655A-4EF5-876E-706503CB1AC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.BusinessLayer", "Tests\Tests.BusinessLayer\Tests.BusinessLayer.csproj", "{8BD5FD24-5058-470B-A63A-DFEDFB85FBD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +37,16 @@ Global
 		{AD0D98AB-412F-4758-BE1C-E16DFE3DCB9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD0D98AB-412F-4758-BE1C-E16DFE3DCB9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD0D98AB-412F-4758-BE1C-E16DFE3DCB9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BD5FD24-5058-470B-A63A-DFEDFB85FBD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BD5FD24-5058-470B-A63A-DFEDFB85FBD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BD5FD24-5058-470B-A63A-DFEDFB85FBD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BD5FD24-5058-470B-A63A-DFEDFB85FBD0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8BD5FD24-5058-470B-A63A-DFEDFB85FBD0} = {860C533B-655A-4EF5-876E-706503CB1AC4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6BC144B9-D4B8-4B8E-B800-308AB06B72E6}
