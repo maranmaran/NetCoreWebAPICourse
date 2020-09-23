@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PokemonAPI.BusinessLayer.Exceptions;
 using PokemonAPI.BusinessLayer.Interfaces;
 using PokemonAPI.BusinessLayer.Validator;
@@ -20,16 +21,20 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
         private readonly IRepository<Pokemon> _repository;
         private readonly IMapper _mapper;
         private readonly IPokemonValidator _validator;
+        private readonly ILogger<PokemonService> _logger;
 
-        public PokemonService(IRepository<Pokemon> repository, IMapper mapper, IPokemonValidator validator)
+        public PokemonService(IRepository<Pokemon> repository, IMapper mapper, IPokemonValidator validator, ILogger<PokemonService> logger)
         {
             _repository = repository;
             _mapper = mapper;
             _validator = validator;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<PokemonDTO>> GetAll(CancellationToken cancellationToken = default)
         {
+            _logger.LogInformation("Fetching pokemons");
+
             var pokemons = await _repository.GetAll(
                 include: source => source
                     .Include(x => x.Abilities)
