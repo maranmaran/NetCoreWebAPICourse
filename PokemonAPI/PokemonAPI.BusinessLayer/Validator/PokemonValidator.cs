@@ -1,4 +1,5 @@
-﻿using PokemonAPI.BusinessLayer.Exceptions;
+﻿using Microsoft.Extensions.Logging;
+using PokemonAPI.BusinessLayer.Exceptions;
 using PokemonAPI.BusinessLayer.Interfaces;
 using PokemonAPI.PersistenceLayer.DTOModels;
 using System;
@@ -11,7 +12,12 @@ namespace PokemonAPI.BusinessLayer.Validator
     public class PokemonValidator : IPokemonValidator
     {
         private Dictionary<string, List<string>> errorMap = new Dictionary<string, List<string>>();
-        
+        private readonly ILogger<PokemonValidator> _logger;
+
+        public PokemonValidator(ILogger<PokemonValidator> logger)
+        {
+            _logger = logger;
+        }
 
         private void AddOrUpdatePokemonErrors(Dictionary<string, List<string>> errorMap, String message, String errorKey)
         {
@@ -71,6 +77,7 @@ namespace PokemonAPI.BusinessLayer.Validator
 
             if (errorMap.Count > 0)
             {
+                _logger.LogInformation($"Validation for pokemon: {pokemon.Id} failed");
                 throw new ValidationException("pokemon", errorMap);
             }
             

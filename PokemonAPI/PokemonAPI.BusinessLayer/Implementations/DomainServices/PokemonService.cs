@@ -23,6 +23,8 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
         private readonly IPokemonValidator _validator;
         private readonly ILogger<PokemonService> _logger;
 
+
+
         public PokemonService(IRepository<Pokemon> repository, IMapper mapper, IPokemonValidator validator, ILogger<PokemonService> logger)
         {
             _repository = repository;
@@ -33,7 +35,7 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
 
         public async Task<IEnumerable<PokemonDTO>> GetAll(CancellationToken cancellationToken = default)
         {
-            _logger.LogInformation("Fetching pokemons");
+            
 
             var pokemons = await _repository.GetAll(
                 include: source => source
@@ -42,6 +44,7 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
                 cancellationToken: cancellationToken
             );
 
+            _logger.LogInformation("Get all pokemons request succesfull");
             return _mapper.Map<IEnumerable<PokemonDTO>>(pokemons);
         }
 
@@ -56,8 +59,11 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
             );
 
             if (pokemon == null)
+            {
                 throw new NotFoundException(id);
+            }
 
+            _logger.LogInformation($"Get request for pokemon: {id} succesfull");
             return _mapper.Map<PokemonDTO>(pokemon);
         }
 
@@ -65,6 +71,7 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
         {
 
             _validator.IsValid(pokemon);
+            _logger.LogInformation($"Validation for pokemon: {pokemon.Id} successfull");
 
             try
             {
@@ -76,10 +83,6 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
                 throw new CreateException(e);
             }
             
-
-
-            
-            
         }
 
         public async Task Update(PokemonDTO pokemon, CancellationToken cancellationToken = default)
@@ -87,8 +90,8 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
             try
             {
                 var pokemonEntity = _mapper.Map<Pokemon>(pokemon);
-
                 await _repository.Update(pokemonEntity, cancellationToken);
+                _logger.LogInformation($"Pokemon with ID: {pokemon.Id} succesfully updated");
             }
             catch (Exception e)
             {
@@ -101,6 +104,7 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
             try
             {
                 await _repository.Delete(id, cancellationToken);
+                _logger.LogInformation($"Pokemon with ID: {id} succesfully deleted");
             }
             catch (Exception e)
             {
