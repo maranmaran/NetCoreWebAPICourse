@@ -19,6 +19,7 @@ namespace PokemonAPI.BusinessLayer
             services.AddTransient<ITrainerService, TrainerService>();
             services.AddTransient<IPokemonValidator, PokemonValidator>();
             services.AddTransient<ICatchService, CatchService>();
+            services.AddTransient<IChanceGenerator, ChanceGenerator>();
         }
 
         /// <summary>

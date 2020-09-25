@@ -2,6 +2,7 @@
 using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using PokemonAPI.BusinessLayer.Interfaces;
 using PokemonAPI.DomainLayer.Entities;
 using PokemonAPI.PersistenceLayer.Interfaces;
@@ -13,12 +14,14 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
         private readonly IRepository<Admin> _repository;
         private readonly IJwtGenerator _jwtGenerator;
         private readonly IPasswordHasher _passwordHasher;
+        private readonly ILogger<AuthenticationService> _logger;
 
-        public AuthenticationService(IRepository<Admin> repository, IJwtGenerator jwtGenerator, IPasswordHasher passwordHasher)
+        public AuthenticationService(IRepository<Admin> repository, IJwtGenerator jwtGenerator, IPasswordHasher passwordHasher, ILogger<AuthenticationService> logger)
         {
             _repository = repository;
             _jwtGenerator = jwtGenerator;
             _passwordHasher = passwordHasher;
+            _logger = logger;
         }
 
         public async Task<string> SignIn(string username, string password, CancellationToken cancellationToken = default)
@@ -32,6 +35,7 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
                 if (admin == null)
                     throw new AuthenticationException();
 
+                _logger.LogInformation($"Authentication for user {username} successfull");
                 return _jwtGenerator.GenerateToken(admin.Id);
             }
             catch (Exception e)
