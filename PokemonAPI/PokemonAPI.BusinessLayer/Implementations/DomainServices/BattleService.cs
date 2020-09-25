@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper.QueryableExtensions.Impl;
 using PokemonAPI.PersistenceLayer.DTOModels;
+using Microsoft.Extensions.Logging;
 
 [assembly: InternalsVisibleTo("Tests.BusinessLayer")]
 namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
@@ -18,10 +19,12 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
     {
 
         private readonly IPokemonService _pokemonService;
+        private readonly ILogger<BattleService> _logger;
 
-        public BattleService(IPokemonService pokemonService)
+        public BattleService(IPokemonService pokemonService, ILogger<BattleService> logger)
         {
             _pokemonService = pokemonService;
+            _logger = logger;
         }
 
         public async Task<BattleResult> Battle(Guid firstPokemonId, Guid secondPokemonId, CancellationToken cancellationToken = default)
@@ -32,10 +35,15 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
             
             // Determine attack for turn based battle
             var attackerId = GetFirstAttacker(firstPokemon, secondPokemon);
+            _logger.LogInformation("Getting first attacker");
+            _logger.LogDebug($"First attacker is pokemon: {attackerId}");
+            _logger.LogInformation("Battle is starting");
  
             // Do special attack and special defense moves first - Get remaining health
             firstPokemon.BaseStats.HealthPoints = firstPokemon.BaseStats.HealthPoints + firstPokemon.BaseStats.SpecialDefense - secondPokemon.BaseStats.SpecialAttack;
             secondPokemon.BaseStats.HealthPoints = secondPokemon.BaseStats.HealthPoints + secondPokemon.BaseStats.SpecialDefense - firstPokemon.BaseStats.SpecialAttack;
+
+            _logger.LogDebug($"Health points of pokemons are: firstPokemon: {firstPokemon.BaseStats.HealthPoints} secondPokemon: {secondPokemon.BaseStats.HealthPoints}");
 
             if (firstPokemon.BaseStats.HealthPoints < 0 || secondPokemon.BaseStats.HealthPoints < 0)
             {
@@ -61,6 +69,9 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
                 // do attack
                 currentDefensivePokemon.BaseStats.HealthPoints -= currentAttackingPokemon.BaseStats.Attack;
 
+                _logger.LogDebug($"Current defensive pokemon HP: {currentDefensivePokemon.BaseStats.HealthPoints}\n " +
+                                $"Current attacking pokemon HP: {currentAttackingPokemon.BaseStats.HealthPoints}");
+
                 queue.Enqueue(currentDefensivePokemon);
                 queue.Enqueue(currentAttackingPokemon);
             }
@@ -71,9 +82,13 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
             // return results
             if (firstPokemon.BaseStats.HealthPoints > secondPokemon.BaseStats.HealthPoints)
             {
+                _logger.LogInformation("Battle finished");
+                _logger.LogDebug($"Winner is pokemon: {firstPokemon.Id}");
                 return new BattleResult(firstPokemon.Id, secondPokemon.Id);
             }
 
+            _logger.LogInformation("Battle finished");
+            _logger.LogDebug($"Winner is pokemon: {secondPokemon.Id}");
             return new BattleResult(secondPokemon.Id, firstPokemon.Id);
         }
 
