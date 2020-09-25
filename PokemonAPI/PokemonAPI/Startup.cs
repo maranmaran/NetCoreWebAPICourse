@@ -1,8 +1,10 @@
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PokemonAPI.BusinessLayer;
+using PokemonAPI.BusinessLayer.Validator;
 using PokemonAPI.Middleware;
 using PokemonAPI.Middleware.API.Middleware;
 using PokemonAPI.PersistenceLayer;
@@ -45,6 +47,9 @@ namespace PokemonAPI
             services.ConfigureMVC();
             services.ConfigureAuthentication(Configuration);
             services.ConfigureHealthChecks();
+
+            // configure FluentValidation
+            services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<TrainerValidator>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
