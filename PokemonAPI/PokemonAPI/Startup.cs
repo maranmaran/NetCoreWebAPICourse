@@ -44,12 +44,10 @@ namespace PokemonAPI
             services.ConfigureSwagger();
 
             // configure internal services
-            services.ConfigureMVC();
+            services.ConfigureMVCAndFluentValidation();
             services.ConfigureAuthentication(Configuration);
             services.ConfigureHealthChecks();
 
-            // configure FluentValidation
-            services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<TrainerValidator>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

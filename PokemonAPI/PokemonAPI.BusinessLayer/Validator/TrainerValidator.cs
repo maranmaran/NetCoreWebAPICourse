@@ -19,30 +19,23 @@ namespace PokemonAPI.BusinessLayer.Validator
 		public bool AllLetters(string fullName)
         {
 			string[] splitedFullName = fullName.Split(' ');
-			var onlyLetters = true;
 
 			foreach (var name in splitedFullName)
             {
 				if (!name.All(Char.IsLetter))
                 {
-					onlyLetters = false;
+					return false;
                 }
             }
-			return onlyLetters;
+			return true;
 		}
 
 		public bool IsNameAndSurname(string fullName)
         {
 			string[] splitedFullName = fullName.Split(' ');
-			
-			if(splitedFullName.Length > 1 && splitedFullName.Length < 3)
-            {
-				return true;
-            }
-			else
-            {
-				return false;
-            }
+
+			return splitedFullName.Length > 1 && splitedFullName.Length < 100 ? true : false;
+            
 		}
 	}
 }
