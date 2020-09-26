@@ -4,7 +4,6 @@ using PokemonAPI.BusinessLayer.Interfaces;
 using PokemonAPI.DomainLayer.Entities;
 using PokemonAPI.PersistenceLayer.Interfaces;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,7 +33,9 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
                 throw new CatchPokemonException("Pokemon already has a trainer");
 
             if (_chanceGenerator.getChance(2) != 0)
+            {
                 throw new CatchPokemonException("Unfortunately pokemon dodged your pokeball");
+            }
 
             pokemonEntity.TrainerId = trainerId;
 
