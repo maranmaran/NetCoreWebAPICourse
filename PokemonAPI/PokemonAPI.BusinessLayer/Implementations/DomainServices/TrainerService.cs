@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PokemonAPI.BusinessLayer.Exceptions;
 using PokemonAPI.BusinessLayer.Interfaces;
+using PokemonAPI.BusinessLayer.Validator;
 using PokemonAPI.DomainLayer.Entities;
 using PokemonAPI.PersistenceLayer.Interfaces;
 using System;
@@ -16,6 +17,7 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
     {
         private readonly IRepository<Trainer> _repository;
         private readonly IMapper _mapper;
+        private readonly TrainerValidator _validator = new TrainerValidator();
 
         public TrainerService(IRepository<Trainer> repository, IMapper mapper)
         {
@@ -25,6 +27,9 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
 
         public async Task<Guid> Create(TrainerDTO trainer, CancellationToken cancellationToken = default)
         {
+
+            _validator.Validate(trainer);
+
             try
             {
                 var trainerEntity = _mapper.Map<Trainer>(trainer);

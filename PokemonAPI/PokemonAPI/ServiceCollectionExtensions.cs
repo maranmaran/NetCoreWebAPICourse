@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -7,6 +8,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using PokemonAPI.BusinessLayer.Models;
+using PokemonAPI.BusinessLayer.Validator;
 using System;
 using System.IO;
 using System.Reflection;
@@ -17,7 +19,7 @@ namespace PokemonAPI
 {
     public static class ServiceCollectionExtensions
     {
-        public static void ConfigureMVC(this IServiceCollection services)
+        public static void ConfigureMVCAndFluentValidation(this IServiceCollection services)
         {
             services.AddControllers()
                 .AddNewtonsoftJson(options =>
@@ -27,6 +29,8 @@ namespace PokemonAPI
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     options.AllowInputFormatterExceptionMessages = true;
                 });
+
+            services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<TrainerValidator>());
 
         }
 
