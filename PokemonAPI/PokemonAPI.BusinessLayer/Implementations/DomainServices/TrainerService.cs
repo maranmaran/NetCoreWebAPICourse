@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PokemonAPI.BusinessLayer.Exceptions;
 using PokemonAPI.BusinessLayer.Interfaces;
 using PokemonAPI.BusinessLayer.Validator;
@@ -7,9 +8,12 @@ using PokemonAPI.DomainLayer.Entities;
 using PokemonAPI.PersistenceLayer.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+
+[assembly: InternalsVisibleTo("Tests.BusinessLayer")]
 
 namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
 {
@@ -18,17 +22,20 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
         private readonly IRepository<Trainer> _repository;
         private readonly IMapper _mapper;
         private readonly TrainerValidator _validator = new TrainerValidator();
+        private readonly ILogger<TrainerService> _logger;
 
-        public TrainerService(IRepository<Trainer> repository, IMapper mapper)
+        public TrainerService(IRepository<Trainer> repository, IMapper mapper, ILogger<TrainerService> logger)
         {
             _repository = repository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<Guid> Create(TrainerDTO trainer, CancellationToken cancellationToken = default)
         {
 
             _validator.Validate(trainer);
+            _logger.LogInformation($"Validation for trainer: {trainer.Id} successfull");
 
             try
             {
@@ -46,6 +53,7 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
             try
             {
                 await _repository.Delete(id, cancellationToken);
+                _logger.LogInformation($"Trainer with ID: {id} succesfully deleted)");
             }
             catch (Exception e)
             {
@@ -65,6 +73,7 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
             if (trainer == null)
                 throw new NotFoundException(id);
 
+            _logger.LogInformation($"Get request for trainer: {id} succesfull");
             return _mapper.Map<TrainerDTO>(trainer);
         }
 
@@ -76,6 +85,7 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
                 cancellationToken: cancellationToken
             );
 
+            _logger.LogInformation("Get all trainers request succesfull");
             return _mapper.Map<IEnumerable<TrainerDTO>>(trainers);
         }
 
@@ -86,6 +96,7 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
                 var trainerEntity = _mapper.Map<Trainer>(trainer);
 
                 await _repository.Update(trainerEntity, cancellationToken);
+                _logger.LogInformation($"Trainer with ID: {trainer.Id} succesfully updated");
             }
             catch (Exception e)
             {

@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using PokemonAPI.BusinessLayer.Implementations.DomainServices;
 using PokemonAPI.BusinessLayer.Validator;
@@ -56,7 +58,9 @@ namespace Tests.BusinessLayer
 
             var mapper = TestHelper.GetMapper();
 
-            var service = new PokemonService(mapper: mapper, validator: null, repository: repository.Object);
+            var logger = new NullLogger<PokemonService>();
+
+            var service = new PokemonService(mapper: mapper, validator: null, repository: repository.Object, logger: logger);
 
             // act
             var result = (await service.GetAll(CancellationToken.None)).ToList();
@@ -112,9 +116,13 @@ namespace Tests.BusinessLayer
 
             var mapper = TestHelper.GetMapper();
 
-            var validator = new PokemonValidator();
+            var logger = new NullLogger<PokemonService>();
 
-            var service = new PokemonService(mapper: mapper, validator: validator, repository: repository.Object);
+            var loggerValidator = new Mock<ILogger<PokemonValidator>>();
+
+            var validator = new PokemonValidator(loggerValidator.Object);
+
+            var service = new PokemonService(mapper: mapper, validator: validator, repository: repository.Object, logger: logger); 
 
             // act
             var pokemonDTO = mapper.Map<PokemonDTO>(pokemon);
@@ -151,7 +159,9 @@ namespace Tests.BusinessLayer
 
             var mapper = TestHelper.GetMapper();
 
-            var service = new PokemonService(mapper: mapper, validator: null, repository: repository.Object);
+            var logger = new NullLogger<PokemonService>();
+
+            var service = new PokemonService(mapper: mapper, validator: null, repository: repository.Object, logger: logger);
 
             // act
 

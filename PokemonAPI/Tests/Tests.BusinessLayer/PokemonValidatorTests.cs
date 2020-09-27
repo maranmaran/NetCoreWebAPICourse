@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Moq;
 using PokemonAPI.BusinessLayer.Exceptions;
 using PokemonAPI.BusinessLayer.Validator;
 using PokemonAPI.DomainLayer.Enums;
@@ -26,7 +28,10 @@ namespace Tests.BusinessLayer
             };
 
             // ACT
-            var validator = new PokemonValidator();
+
+            var loggerValidator = new Mock<ILogger<PokemonValidator>>();
+
+            var validator = new PokemonValidator(loggerValidator.Object);
 
             // ASSERT
             Assert.Throws<ValidationException>(() => validator.IsValid(pokemon));
@@ -49,7 +54,9 @@ namespace Tests.BusinessLayer
             };
 
             // ACT
-            var validator = new PokemonValidator();
+            var loggerValidator = new Mock<ILogger<PokemonValidator>>();
+
+            var validator = new PokemonValidator(loggerValidator.Object);
 
             // ASSERT
             Assert.Throws<ValidationException>(() => validator.IsValid(pokemon));
@@ -72,7 +79,9 @@ namespace Tests.BusinessLayer
             };
 
             // ACT
-            var validator = new PokemonValidator();
+            var loggerValidator = new Mock<ILogger<PokemonValidator>>();
+
+            var validator = new PokemonValidator(loggerValidator.Object);
 
            // ASSERT
             Assert.Throws<ValidationException>(() => validator.IsValid(pokemon));

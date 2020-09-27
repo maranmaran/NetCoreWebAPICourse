@@ -4,9 +4,11 @@ using PokemonAPI.BusinessLayer.Interfaces;
 using PokemonAPI.DomainLayer.Entities;
 using PokemonAPI.PersistenceLayer.Interfaces;
 using System;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
+[assembly: InternalsVisibleTo("Tests.BusinessLayer")]
 namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
 {
     internal class CatchService : ICatchService

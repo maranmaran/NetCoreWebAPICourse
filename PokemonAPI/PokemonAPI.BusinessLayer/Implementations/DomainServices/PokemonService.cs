@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -13,6 +14,7 @@ using PokemonAPI.DomainLayer.Entities;
 using PokemonAPI.PersistenceLayer.DTOModels;
 using PokemonAPI.PersistenceLayer.Interfaces;
 
+[assembly: InternalsVisibleTo("Tests.BusinessLayer")]
 
 namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
 {
