@@ -34,7 +34,7 @@ namespace PokemonAPI.BusinessLayer.Validator
         {
 			string[] splitedFullName = fullName.Split(' ');
 
-			return splitedFullName.Length > 1 && splitedFullName.Length < 100 ? true : false;
+			return splitedFullName.Length > 1 && splitedFullName.Length < 100;
             
 		}
 	}
