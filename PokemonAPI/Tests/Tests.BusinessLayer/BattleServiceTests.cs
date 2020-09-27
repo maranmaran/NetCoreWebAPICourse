@@ -1,6 +1,8 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using PokemonAPI.BusinessLayer.Implementations.DomainServices;
 using PokemonAPI.BusinessLayer.Interfaces;
@@ -52,7 +54,9 @@ namespace Tests.BusinessLayer
                 .Setup(x => x.Get(Guid.Parse("9372c3f3-8281-4c21-8d0f-8830817bc2fb"), CancellationToken.None))
                 .ReturnsAsync(secondPokemon);
 
-            var service = new BattleService(pokemonServiceMock.Object);
+            var logger = new NullLogger<BattleService>();
+
+            var service = new BattleService(pokemonServiceMock.Object, logger);
 
             // ACT
             var result = await service.Battle(firstPokemon.Id, secondPokemon.Id, CancellationToken.None);
@@ -103,7 +107,9 @@ namespace Tests.BusinessLayer
                 .Setup(x => x.Get(Guid.Parse("9372c3f3-8281-4c21-8d0f-8830817bc2fb"), CancellationToken.None))
                 .ReturnsAsync(secondPokemon);
 
-            var service = new BattleService(pokemonServiceMock.Object);
+            var logger = new NullLogger<BattleService>();
+
+            var service = new BattleService(pokemonServiceMock.Object, logger);
 
             // ACT
             var result = await service.Battle(firstPokemon.Id, secondPokemon.Id, CancellationToken.None);
@@ -154,7 +160,9 @@ namespace Tests.BusinessLayer
                 .Setup(x => x.Get(Guid.Parse("9372c3f3-8281-4c21-8d0f-8830817bc2fb"), CancellationToken.None))
                 .ReturnsAsync(secondPokemon);
 
-            var service = new BattleService(pokemonServiceMock.Object);
+            var logger = new NullLogger<BattleService>();
+
+            var service = new BattleService(pokemonServiceMock.Object, logger);
 
             // ACT
             var result = await service.Battle(firstPokemon.Id, secondPokemon.Id, CancellationToken.None);
@@ -205,7 +213,9 @@ namespace Tests.BusinessLayer
                 .Setup(x => x.Get(Guid.Parse("9372c3f3-8281-4c21-8d0f-8830817bc2fb"), CancellationToken.None))
                 .ReturnsAsync(secondPokemon);
 
-            var service = new BattleService(pokemonServiceMock.Object);
+            var logger = new NullLogger<BattleService>();
+
+            var service = new BattleService(pokemonServiceMock.Object, logger);
 
             // ACT
             var result = await service.Battle(firstPokemon.Id, secondPokemon.Id, CancellationToken.None);
@@ -238,7 +248,9 @@ namespace Tests.BusinessLayer
                 }
             };
 
-            var service = new BattleService(null);
+            var logger = new NullLogger<BattleService>();
+
+            var service = new BattleService(null, logger);
 
             // ACT
             var result = service.GetFirstAttacker(firstPokemon, secondPokemon);
@@ -269,7 +281,9 @@ namespace Tests.BusinessLayer
                 }
             };
 
-            var service = new BattleService(null);
+            var logger = new NullLogger<BattleService>();
+
+            var service = new BattleService(null, logger);
 
             // ACT
             var result = service.GetFirstAttacker(firstPokemon, secondPokemon);
