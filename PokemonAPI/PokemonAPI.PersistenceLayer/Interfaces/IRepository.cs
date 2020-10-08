@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Query;
 using PokemonAPI.DomainLayer.Entities;
+using PokemonAPI.DomainLayer.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,9 @@ using System.Threading.Tasks;
 
 namespace PokemonAPI.PersistenceLayer.Interfaces
 {
-    public interface IRepository<TEntity> where TEntity : EntityBase
+    public interface IRepository<TEntity, TProjection>
+       where TEntity : EntityBase, IEntity
+       where TProjection : class
     {
         /// <summary>
         /// Gets all entities
@@ -19,14 +22,14 @@ namespace PokemonAPI.PersistenceLayer.Interfaces
         /// <param name="include">Include statement</param>
         /// <param name="disableTracking">Disables tracking</param>
         /// <param name="cancellationToken"></param>
-        Task<IEnumerable<TEntity>> GetAll(
+        Task<IEnumerable<TProjection>> GetAll(
             Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
             bool disableTracking = true,
             CancellationToken cancellationToken = default);
 
-        /// <summary>
+        /// <summary>g
         /// Gets single entity by ID
         /// </summary>
         /// <param name="filter">Filter predicate</param>
@@ -35,12 +38,11 @@ namespace PokemonAPI.PersistenceLayer.Interfaces
         /// <param name="disableTracking">Disables tracking</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<TEntity> Get(Expression<Func<TEntity, bool>> filter = null,
+        Task<TProjection> Get(Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
             bool disableTracking = true,
             CancellationToken cancellationToken = default);
-
 
         /// <summary>
         /// Inserts single entity

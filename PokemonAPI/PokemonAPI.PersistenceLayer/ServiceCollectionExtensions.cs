@@ -23,7 +23,7 @@ namespace PokemonAPI.PersistenceLayer
             services.AddTransient<ApplicationDbContext>();
 
             // add repositories to DI
-            services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+            services.AddTransient(typeof(IRepository<,>), typeof(Repository<,>));
             //services.AddTransient<IPokemonRepository, PokemonRepository>();
         }
 

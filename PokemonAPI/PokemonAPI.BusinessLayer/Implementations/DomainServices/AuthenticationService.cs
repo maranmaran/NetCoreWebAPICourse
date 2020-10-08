@@ -1,22 +1,22 @@
-﻿using System;
-using System.Security.Authentication;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using PokemonAPI.BusinessLayer.Interfaces;
 using PokemonAPI.DomainLayer.Entities;
 using PokemonAPI.PersistenceLayer.Interfaces;
+using System;
+using System.Security.Authentication;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
 {
     internal class AuthenticationService : IAuthenticationService
     {
-        private readonly IRepository<Admin> _repository;
+        private readonly IRepository<Admin, Admin> _repository;
         private readonly IJwtGenerator _jwtGenerator;
         private readonly IPasswordHasher _passwordHasher;
         private readonly ILogger<AuthenticationService> _logger;
 
-        public AuthenticationService(IRepository<Admin> repository, IJwtGenerator jwtGenerator, IPasswordHasher passwordHasher, ILogger<AuthenticationService> logger)
+        public AuthenticationService(IRepository<Admin, Admin> repository, IJwtGenerator jwtGenerator, IPasswordHasher passwordHasher, ILogger<AuthenticationService> logger)
         {
             _repository = repository;
             _jwtGenerator = jwtGenerator;
@@ -29,8 +29,7 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
             try
             {
                 var admin = await _repository.Get(
-                    filter: user => user.Username == username && user.PasswordHash == _passwordHasher.GetPasswordHash(password),
-                    cancellationToken: cancellationToken);
+                    filter: user => user.Username == username && user.PasswordHash == _passwordHasher.GetPasswordHash(password));
 
                 if (admin == null)
                     throw new AuthenticationException();
