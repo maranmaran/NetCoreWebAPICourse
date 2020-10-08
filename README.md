@@ -1,18 +1,41 @@
 # NetCoreWebAPICourse
-This repository will provide step by step course on how to create Restful web API with .net core 3.1 and entity framework
+This repository is sandbox for training and providing course on how to create Restful web API with .net core 3.1 and entity framework or document databases such as mongo
 
+This course is ment to provide following knowledge:
+
+### Introduction
+- Basic programming principles and paradigms
 - Web API - REST
-- Business services
+- Business services and logic
 - EF Core code first database
 - EF Core data access
 - Repository pattern
-- Jwt authorization
 - Error handling
-- Logging (in progress)
-- Unit testing (in progress)
-- Integrations / Functional tests
-- Web sockets (in progress)
-- Event sourcing (in progress)
+- Logging 
+- Unit testing 
+
+### Intermediate concepts
+- Authorization / Authentication
+- Integration / Functional tests
+- Web sockets
+- Event sourcing 
+- SQL Profiling & optimization
+- Worker services
+- Document databases
+- Reflection & Expression trees
+- Structured Logging
+- Containerization
+
+### Go to production
+- Deploying 
+- CI/CD pipeline management
+
+### More advanced stuff
+- GraphQL
+- Microservice architecture
+- API Gateway
+
+
 
 # Pokemon API
 <p>The app should be implemented using .NET Core Web API and MSSQL database.</p>
