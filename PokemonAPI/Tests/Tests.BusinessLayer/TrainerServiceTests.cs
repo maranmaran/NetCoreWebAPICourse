@@ -113,7 +113,7 @@ namespace Tests.BusinessLayer
             var inputGuidToAssert = Guid.Empty;
 
             //arrange 
-            var repository = new Mock<IRepository<Trainer>>();
+            var repository = new Mock<IRepository<Trainer, TrainerDTO>>();
             var insertSetup = repository.Setup(x =>
                 x.Delete(
                     It.IsAny<Guid>(),

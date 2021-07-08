@@ -9,7 +9,6 @@ using PokemonAPI.PersistenceLayer.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,12 +18,12 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
 {
     internal class TrainerService : ITrainerService
     {
-        private readonly IRepository<Trainer> _repository;
+        private readonly IRepository<Trainer, TrainerDTO> _repository;
         private readonly IMapper _mapper;
         private readonly TrainerValidator _validator = new TrainerValidator();
         private readonly ILogger<TrainerService> _logger;
 
-        public TrainerService(IRepository<Trainer> repository, IMapper mapper, ILogger<TrainerService> logger)
+        public TrainerService(IRepository<Trainer, TrainerDTO> repository, IMapper mapper, ILogger<TrainerService> logger)
         {
             _repository = repository;
             _mapper = mapper;
@@ -74,19 +73,18 @@ namespace PokemonAPI.BusinessLayer.Implementations.DomainServices
                 throw new NotFoundException(id);
 
             _logger.LogInformation($"Get request for trainer: {id} succesfull");
-            return _mapper.Map<TrainerDTO>(trainer);
+            return trainer;
         }
 
         public async Task<IEnumerable<TrainerDTO>> GetAll(CancellationToken cancellationToken = default)
         {
             var trainers = await _repository.GetAll(
                 include: source => source
-                    .Include(t => t.CaughtPokemons),
-                cancellationToken: cancellationToken
+                    .Include(t => t.CaughtPokemons)
             );
 
             _logger.LogInformation("Get all trainers request succesfull");
-            return _mapper.Map<IEnumerable<TrainerDTO>>(trainers);
+            return trainers;
         }
 
         public async Task Update(TrainerDTO trainer, CancellationToken cancellationToken = default)

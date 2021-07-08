@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using PokemonAPI.DomainLayer;
 using PokemonAPI.DomainLayer.Entities;
+using PokemonAPI.DomainLayer.Interfaces;
 using PokemonAPI.PersistenceLayer.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -9,24 +12,29 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using PokemonAPI.DomainLayer.Entities;
-using PokemonAPI.PersistenceLayer.Interfaces;
 
 namespace PokemonAPI.PersistenceLayer.Repositories
 {
-    internal class Repository<TEntity> : IRepository<TEntity> where TEntity : EntityBase
+    /// <summary>
+    /// Overload with TProjection optional
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
+    /// <typeparam name="TProjection"></typeparam>
+    internal class Repository<TEntity, TProjection> : IRepository<TEntity, TProjection>
+    where TEntity : EntityBase, IEntity
+    where TProjection : class
     {
         private readonly ApplicationDbContext _context;
         private protected readonly DbSet<TEntity> Entities;
+        private readonly IMapper _mapper;
 
-        public Repository(ApplicationDbContext context)
+        public Repository(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
             Entities = _context.Set<TEntity>();
         }
-
-
-        public async Task<IEnumerable<TEntity>> GetAll(Expression<Func<TEntity, bool>> filter = null,
+        public async Task<IEnumerable<TProjection>> GetAll(Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
             bool disableTracking = true,
@@ -54,10 +62,10 @@ namespace PokemonAPI.PersistenceLayer.Repositories
                 entities = orderBy(entities);
             }
 
-            return await entities.ToListAsync(cancellationToken);
+            return await entities.ProjectTo<TProjection>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
         }
 
-        public async Task<TEntity> Get(Expression<Func<TEntity, bool>> filter = null,
+        public async Task<TProjection> Get(Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
             bool disableTracking = true,
@@ -85,7 +93,7 @@ namespace PokemonAPI.PersistenceLayer.Repositories
                 entities = orderBy(entities);
             }
 
-            return await entities.FirstOrDefaultAsync(cancellationToken);
+            return await entities.ProjectTo<TProjection>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(cancellationToken);
         }
 
         public async Task<Guid> Insert(TEntity entity, CancellationToken cancellationToken = default)
